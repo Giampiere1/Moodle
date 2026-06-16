@@ -1,0 +1,273 @@
+/* =============================================================
+   CNL Certificates — Verification Page Styles
+   Colegio de Notarios de Lima
+   ============================================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+:root {
+    --cnl-green:      #1a5c38;
+    --cnl-green-light:#2e7d55;
+    --cnl-gold:       #c8a951;
+    --cnl-gold-light: #e5c97a;
+    --cnl-dark:       #0f1b14;
+    --cnl-text:       #2d3748;
+    --cnl-muted:      #718096;
+    --cnl-bg:         #f5f7f5;
+    --cnl-white:      #ffffff;
+    --cnl-red:        #c53030;
+    --cnl-red-light:  #fff5f5;
+    --cnl-green-bg:   #f0fff4;
+    --radius:         16px;
+    --shadow:         0 20px 60px rgba(0,0,0,0.12);
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background: linear-gradient(135deg, #0f3320 0%, #1a5c38 50%, #0d2218 100%);
+    min-height: 100vh;
+    margin: 0;
+}
+
+/* Wrapper */
+.cnl-verify-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 80vh;
+    padding: 40px 16px;
+}
+
+/* Main card */
+.cnl-verify-card {
+    background: var(--cnl-white);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    width: 100%;
+    max-width: 620px;
+    overflow: hidden;
+    animation: slideUp 0.5s ease;
+}
+
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Header */
+.cnl-verify-header {
+    background: linear-gradient(135deg, var(--cnl-green) 0%, var(--cnl-green-light) 100%);
+    padding: 40px 32px 32px;
+    text-align: center;
+    color: var(--cnl-white);
+    position: relative;
+}
+
+.cnl-verify-header::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0; right: 0;
+    height: 40px;
+    background: var(--cnl-white);
+    clip-path: ellipse(60% 100% at 50% 100%);
+}
+
+.cnl-logo {
+    height: 64px;
+    margin-bottom: 16px;
+    filter: drop-shadow(0 2px 8px rgba(0,0,0,0.3));
+}
+
+.cnl-verify-header h1 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0 0 8px;
+    letter-spacing: -0.3px;
+}
+
+.cnl-verify-header p {
+    font-size: 0.9rem;
+    opacity: 0.85;
+    margin: 0;
+}
+
+/* Form */
+.cnl-verify-form {
+    padding: 32px 32px 0;
+}
+
+.cnl-input-group {
+    display: flex;
+    gap: 10px;
+}
+
+.cnl-input {
+    flex: 1;
+    padding: 12px 16px;
+    border: 2px solid #e2e8f0;
+    border-radius: 10px;
+    font-size: 0.95rem;
+    font-family: 'Inter', sans-serif;
+    color: var(--cnl-text);
+    transition: border-color 0.2s, box-shadow 0.2s;
+    outline: none;
+}
+
+.cnl-input:focus {
+    border-color: var(--cnl-green);
+    box-shadow: 0 0 0 3px rgba(26,92,56,0.15);
+}
+
+.cnl-btn-verify {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: linear-gradient(135deg, var(--cnl-green) 0%, var(--cnl-green-light) 100%);
+    color: var(--cnl-white);
+    border: none;
+    border-radius: 10px;
+    padding: 12px 20px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    font-family: 'Inter', sans-serif;
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.2s;
+    white-space: nowrap;
+}
+
+.cnl-btn-verify:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(26,92,56,0.4);
+}
+
+/* Result areas */
+.cnl-result {
+    margin: 28px 32px 0;
+    border-radius: 12px;
+    padding: 28px;
+    text-align: center;
+    animation: fadeIn 0.4s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.97); }
+    to   { opacity: 1; transform: scale(1); }
+}
+
+.cnl-result--valid {
+    background: var(--cnl-green-bg);
+    border: 2px solid #68d391;
+}
+
+.cnl-result--invalid {
+    background: var(--cnl-red-light);
+    border: 2px solid #fc8181;
+}
+
+.cnl-result-icon svg {
+    margin-bottom: 12px;
+}
+
+.cnl-result--valid .cnl-result-icon svg { color: #2f855a; }
+.cnl-result--invalid .cnl-result-icon svg { color: var(--cnl-red); }
+
+.cnl-result h2 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin: 0 0 8px;
+}
+
+.cnl-result--valid h2 { color: #2f855a; }
+.cnl-result--invalid h2 { color: var(--cnl-red); }
+
+.cnl-valid-msg {
+    font-size: 0.875rem;
+    color: var(--cnl-muted);
+    margin-bottom: 20px;
+}
+
+/* Certificate details table */
+.cnl-cert-details {
+    background: var(--cnl-white);
+    border-radius: 10px;
+    overflow: hidden;
+    text-align: left;
+    border: 1px solid #c6f6d5;
+}
+
+.cnl-detail-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px 16px;
+    border-bottom: 1px solid #f0fff4;
+    transition: background 0.15s;
+}
+
+.cnl-detail-row:last-child { border-bottom: none; }
+.cnl-detail-row:hover { background: #f7fff9; }
+
+.cnl-detail-label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--cnl-green);
+    min-width: 110px;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+}
+
+.cnl-detail-label svg { flex-shrink: 0; }
+
+.cnl-detail-value {
+    font-size: 0.9rem;
+    color: var(--cnl-text);
+    font-weight: 500;
+    flex: 1;
+}
+
+.cnl-code {
+    font-family: 'Courier New', monospace;
+    background: #f0fff4;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    color: var(--cnl-green);
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+/* Footer */
+.cnl-verify-footer {
+    padding: 20px 32px 28px;
+    text-align: center;
+    border-top: 1px solid #f0f4f0;
+    margin-top: 28px;
+}
+
+.cnl-verify-footer p {
+    font-size: 0.8rem;
+    color: var(--cnl-muted);
+    margin: 0;
+}
+
+.cnl-verify-footer a {
+    color: var(--cnl-green);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.cnl-verify-footer a:hover { text-decoration: underline; }
+
+/* Responsive */
+@media (max-width: 480px) {
+    .cnl-input-group { flex-direction: column; }
+    .cnl-verify-form { padding: 24px 20px 0; }
+    .cnl-result { margin: 20px 20px 0; padding: 20px; }
+    .cnl-verify-header { padding: 28px 20px 24px; }
+    .cnl-cert-details { font-size: 0.85rem; }
+    .cnl-detail-label { min-width: 90px; }
+}
