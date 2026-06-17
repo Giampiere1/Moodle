@@ -14,13 +14,16 @@ $string['verifybutton'] = 'Verificar';
 $string['emailsubject'] = 'Su Certificado del curso {$a->course}';
 $string['emailbody'] = 'Estimado/a {$a->username},
 
-Felicitaciones por completar exitosamente el curso "{$a->course}". Adjunto a este correo encontrará su certificado en formato digital.
+Felicitaciones por completar exitosamente el curso "{$a->course}". Adjunto encontrará su certificado oficial en formato PDF.
 
 Código de validación: {$a->code}
-URL de verificación: {$a->url}
 
 Atentamente,
-Colegio de Notarios de Lima';
+Colegio de Notarios de Lima
+Plataforma Digital Notarial
+
+---
+Este es un mensaje automático, por favor no responda a este correo.';
 $string['emailsent'] = 'El certificado ha sido enviado exitosamente a su correo electrónico.';
 $string['emailfailed'] = 'Error al intentar enviar el correo. Por favor contacte al administrador.';
 $string['notcompleted'] = 'Aún no ha completado el curso al 100%. Complete todas las actividades obligatorias para obtener su certificado.';

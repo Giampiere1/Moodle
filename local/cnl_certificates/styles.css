@@ -1,0 +1,201 @@
+/* CSS styling for local_cnl_certificates completion widget */
+
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&family=Inter:wght@400;500;600&display=swap');
+
+.cnl-certificate-widget {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    z-index: 9999;
+    max-width: 380px;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    box-shadow: 0 12px 40px rgba(15, 23, 42, 0.15);
+    padding: 24px;
+    font-family: 'Inter', 'Outfit', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    color: #1e293b;
+    box-sizing: border-box;
+    animation: cnlSlideIn 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.cnl-certificate-widget.cnl-hidden {
+    opacity: 0;
+    transform: translateY(40px) scale(0.95);
+    pointer-events: none;
+}
+
+.cnl-cert-close {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    background: transparent;
+    border: none;
+    color: #64748b;
+    cursor: pointer;
+    font-size: 1.25rem;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+    padding: 0;
+    line-height: 1;
+}
+
+.cnl-cert-close:hover {
+    color: #0f172a;
+    background-color: rgba(15, 23, 42, 0.08);
+}
+
+.cnl-cert-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 14px;
+}
+
+.cnl-cert-icon-wrapper {
+    background: linear-gradient(135deg, #ccfbf1, #99f6e4);
+    border-radius: 50%;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #0d9488;
+    flex-shrink: 0;
+    box-shadow: 0 4px 10px rgba(13, 148, 136, 0.15);
+    animation: cnlPulse 2s infinite;
+}
+
+.cnl-cert-title-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.cnl-cert-title {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 700;
+    font-size: 1.15rem;
+    line-height: 1.25;
+    background: linear-gradient(135deg, #0f766e, #0ea5e9);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin: 0;
+}
+
+.cnl-cert-subtitle {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #0d9488;
+    font-weight: 600;
+    margin: 0;
+}
+
+.cnl-cert-desc {
+    font-size: 0.9rem;
+    color: #475569;
+    line-height: 1.45;
+    margin: 0 0 20px 0;
+}
+
+.cnl-cert-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.cnl-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px 20px;
+    border-radius: 12px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    text-decoration: none !important;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    border: none;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+.cnl-btn-download {
+    background: linear-gradient(135deg, #0d9488, #14b8a6);
+    color: #ffffff !important;
+    box-shadow: 0 4px 14px rgba(13, 148, 136, 0.25);
+}
+
+.cnl-btn-download:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(13, 148, 136, 0.35);
+    filter: brightness(1.05);
+}
+
+.cnl-btn-download:active {
+    transform: translateY(0);
+}
+
+.cnl-btn-email {
+    background: transparent;
+    border: 2px solid #0d9488;
+    color: #0d9488 !important;
+}
+
+.cnl-btn-email:hover {
+    background: rgba(13, 148, 136, 0.08);
+    transform: translateY(-2px);
+}
+
+.cnl-btn-email:active {
+    transform: translateY(0);
+}
+
+.cnl-btn-email-form {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+
+@keyframes cnlSlideIn {
+    from {
+        transform: translateY(40px) scale(0.95);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes cnlPulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(13, 148, 136, 0.4);
+    }
+    70% {
+        box-shadow: 0 0 0 10px rgba(13, 148, 136, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(13, 148, 136, 0);
+    }
+}
+
+@media (max-width: 480px) {
+    .cnl-certificate-widget {
+        bottom: 16px;
+        right: 16px;
+        left: 16px;
+        max-width: calc(100% - 32px);
+        padding: 20px;
+    }
+}

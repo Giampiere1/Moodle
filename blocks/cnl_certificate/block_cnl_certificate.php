@@ -7,7 +7,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-define('MOODLE_INTERNAL', true) || die();
+defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->dirroot . '/local/cnl_certificates/lib.php');
 
