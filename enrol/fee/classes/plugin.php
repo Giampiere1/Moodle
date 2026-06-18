@@ -308,17 +308,9 @@ class enrol_fee_plugin extends enrol_plugin {
         $mform->addElement('select', 'status', get_string('status', 'enrol_fee'), $options);
         $mform->setDefault('status', $this->get_config('status'));
 
-        $accounts = \core_payment\helper::get_payment_accounts_menu($context);
-        if ($accounts) {
-            $accounts = ((count($accounts) > 1) ? ['' => ''] : []) + $accounts;
-            $mform->addElement('select', 'customint1', get_string('paymentaccount', 'payment'), $accounts);
-        } else {
-            $mform->addElement('static', 'customint1_text', get_string('paymentaccount', 'payment'),
-                html_writer::span(get_string('noaccountsavilable', 'payment'), 'alert alert-danger'));
-            $mform->addElement('hidden', 'customint1');
-            $mform->setType('customint1', PARAM_INT);
-        }
-        $mform->addHelpButton('customint1', 'paymentaccount', 'enrol_fee');
+        // Izipay: payment account field hidden, handled internally.
+        $mform->addElement('hidden', 'customint1', 1);
+        $mform->setType('customint1', PARAM_INT);
 
         $mform->addElement('text', 'cost', get_string('cost', 'enrol_fee'), array('size' => 4));
         $mform->setType('cost', PARAM_RAW);
@@ -392,10 +384,11 @@ class enrol_fee_plugin extends enrol_plugin {
         $typeerrors = $this->validate_param_types($data, $tovalidate);
         $errors = array_merge($errors, $typeerrors);
 
-        if ($data['status'] == ENROL_INSTANCE_ENABLED &&
-                (!$data['customint1']
-                    || !array_key_exists($data['customint1'], \core_payment\helper::get_payment_accounts_menu($context)))) {
-            $errors['status'] = 'Enrolments can not be enabled without specifying the payment account';
+        // Izipay integration: payment account validation bypassed.
+        // Izipay handles payments directly via izipay_token.php and izipay_confirm.php.
+        // If no customint1 set, default to account id=1 (site-level account).
+        if ($data['status'] == ENROL_INSTANCE_ENABLED && empty($data['customint1'])) {
+            $data['customint1'] = 1;
         }
 
         return $errors;

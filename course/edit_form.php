@@ -381,7 +381,41 @@ class course_edit_form extends moodleform {
         $handler->set_parent_context($categorycontext); // For course handler only.
         $handler->instance_form_definition($mform, empty($course->id) ? 0 : $course->id);
 
+        // ── Izipay: Precio de matrícula ──────────────────────────────────
+        $mform->addElement('header', 'izipay_price_hdr', '💳 Precio de Matrícula (Izipay)');
+        $mform->setExpanded('izipay_price_hdr');
+
+        // Leer precio actual si el curso ya existe
+        $current_cost = 10.00;
+        $current_currency = 'PEN';
+        $current_fee_status = 0; // enabled
+        if (!empty($course->id)) {
+            global $DB;
+            $fee_instance = $DB->get_record('enrol', ['courseid' => $course->id, 'enrol' => 'fee']);
+            if ($fee_instance) {
+                $current_cost = (float)$fee_instance->cost;
+                $current_currency = $fee_instance->currency;
+                $current_fee_status = (int)$fee_instance->status;
+            }
+        }
+
+        $mform->addElement('text', 'izipay_cost', 'Precio del curso',
+            ['size' => 10, 'placeholder' => 'Ej: 50.00']);
+        $mform->setType('izipay_cost', PARAM_FLOAT);
+        $mform->setDefault('izipay_cost', $current_cost);
+        $mform->addHelpButton('izipay_cost', 'cost', 'enrol_fee');
+
+        $currencies = ['PEN' => 'PEN - Soles peruanos', 'USD' => 'USD - Dólares'];
+        $mform->addElement('select', 'izipay_currency', 'Moneda', $currencies);
+        $mform->setDefault('izipay_currency', $current_currency);
+
+        $statusopts = [0 => 'Sí – Pago con Izipay habilitado', 1 => 'No – Sin pago por Izipay'];
+        $mform->addElement('select', 'izipay_fee_enabled', 'Cobrar matrícula con Izipay', $statusopts);
+        $mform->setDefault('izipay_fee_enabled', $current_fee_status);
+        // ── Fin Izipay ───────────────────────────────────────────────────
+
         // When two elements we need a group.
+
         $buttonarray = array();
         $classarray = array('class' => 'form-submit');
         if ($returnto !== 0) {

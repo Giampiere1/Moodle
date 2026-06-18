@@ -43,6 +43,24 @@ if (!isloggedin()) {
 $course = $DB->get_record('course', array('id'=>$id), '*', MUST_EXIST);
 $context = context_course::instance($course->id, MUST_EXIST);
 
+// Dynamic check to ensure a fee enrolment instance exists for this course
+if ($course->id > 1) {
+    $feeinstance = $DB->get_record('enrol', array('courseid' => $course->id, 'enrol' => 'fee'));
+    if (!$feeinstance) {
+        $newinstance = new stdClass();
+        $newinstance->enrol = 'fee';
+        $newinstance->status = ENROL_INSTANCE_ENABLED;
+        $newinstance->courseid = $course->id;
+        $newinstance->cost = 10.00;
+        $newinstance->currency = 'PEN';
+        $newinstance->roleid = 5; // Student
+        $newinstance->sortorder = 0;
+        $newinstance->timecreated = time();
+        $newinstance->timemodified = time();
+        $newinstance->id = $DB->insert_record('enrol', $newinstance);
+    }
+}
+
 // Everybody is enrolled on the frontpage
 if ($course->id == SITEID) {
     redirect("$CFG->wwwroot/");

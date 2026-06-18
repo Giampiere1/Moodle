@@ -195,7 +195,38 @@ if ($editform->is_cancelled()) {
         $courseurl = new moodle_url('/course/view.php', array('id' => $course->id));
     }
 
+    // ── Izipay: Guardar precio de matrícula ──────────────────────────
+    if (isset($data->izipay_cost)) {
+        $izipay_cost     = round(max(0, (float)$data->izipay_cost), 2);
+        $izipay_currency = in_array($data->izipay_currency, ['PEN','USD']) ? $data->izipay_currency : 'PEN';
+        $izipay_status   = isset($data->izipay_fee_enabled) ? (int)$data->izipay_fee_enabled : 0;
+
+        $fee_instance = $DB->get_record('enrol', ['courseid' => $course->id, 'enrol' => 'fee']);
+        if ($fee_instance) {
+            $DB->set_field('enrol', 'cost',         $izipay_cost,     ['id' => $fee_instance->id]);
+            $DB->set_field('enrol', 'currency',     $izipay_currency, ['id' => $fee_instance->id]);
+            $DB->set_field('enrol', 'status',       $izipay_status,   ['id' => $fee_instance->id]);
+            $DB->set_field('enrol', 'customint1',   1,                ['id' => $fee_instance->id]);
+            $DB->set_field('enrol', 'timemodified', time(),           ['id' => $fee_instance->id]);
+        } else {
+            $nuevo               = new stdClass();
+            $nuevo->enrol        = 'fee';
+            $nuevo->status       = $izipay_status;
+            $nuevo->courseid     = $course->id;
+            $nuevo->cost         = $izipay_cost;
+            $nuevo->currency     = $izipay_currency;
+            $nuevo->roleid       = 5;
+            $nuevo->customint1   = 1;
+            $nuevo->sortorder    = 0;
+            $nuevo->timecreated  = time();
+            $nuevo->timemodified = time();
+            $DB->insert_record('enrol', $nuevo);
+        }
+    }
+    // ── Fin Izipay ───────────────────────────────────────────────────
+
     if (isset($data->saveanddisplay)) {
+
         // Redirect user to newly created/updated course.
         redirect($courseurl);
     } else {

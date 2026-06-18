@@ -19,62 +19,445 @@
 
     This template will render information about course fee along with a button for payment.
 
-    Classes required for JS:
-    * none
-
-    Data attributes required for JS:
-    * data-component
-    * data-paymentarea
-    * data-itemid
-    * data-cost
-    * data-description
-    * data-successurl
-
     Context variables required for this template:
     * cost - Human readable cost string including amount and currency
     * instanceid - Id of the enrolment instance
     * description - The description for this purchase
     * successurl - The URL of the course
+}}
 
-    Example context (json):
-    {
-        "cost": "$108.50",
-        "instanceid": 11,
-        "description": "Enrolment in course Introduction to algorithms",
-        "successurl": "https://moodlesite/course/view.php?id=2",
-        "isguestuser": false
+<style>
+.izipay-checkout-card {
+    max-width: 500px;
+    margin: 40px auto;
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.izipay-checkout-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+}
+.izipay-checkout-header {
+    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+    padding: 30px 20px;
+    color: #ffffff;
+    text-align: center;
+}
+.izipay-icon-wrapper {
+    width: 64px;
+    height: 64px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 15px;
+    font-size: 28px;
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+.izipay-checkout-header h3 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 700;
+    color: #ffffff;
+    letter-spacing: -0.5px;
+}
+.izipay-checkout-body {
+    padding: 30px;
+    text-align: left;
+}
+.course-detail-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 0;
+    border-bottom: 1px solid #f1f3f5;
+}
+.detail-label {
+    color: #64748b;
+    font-size: 14px;
+    font-weight: 500;
+}
+.detail-value {
+    color: #0f172a;
+    font-size: 15px;
+    font-weight: 600;
+    text-align: right;
+    max-width: 70%;
+}
+.badge-izipay {
+    background: #f0fdf4;
+    color: #166534;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    border: 1px solid #bbf7d0;
+}
+.price-container {
+    background: #f8fafc;
+    border-radius: 12px;
+    padding: 20px;
+    margin: 25px 0;
+    text-align: center;
+    border: 1px solid #f1f5f9;
+}
+.price-label {
+    display: block;
+    color: #64748b;
+    font-size: 13px;
+    font-weight: 500;
+    margin-bottom: 5px;
+}
+.price-amount {
+    margin: 0;
+    font-size: 32px;
+    color: #059669;
+    font-weight: 800;
+    letter-spacing: -1px;
+}
+.izipay-btn-gradient {
+    width: 100%;
+    padding: 15px;
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    border: none;
+    border-radius: 10px;
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+.izipay-btn-gradient:hover {
+    background: linear-gradient(135deg, #059669 0%, #047857 100%);
+    box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+    transform: translateY(-2px);
+}
+.izipay-btn-gradient:active {
+    transform: translateY(0);
+}
+.izipay-btn-gradient:disabled {
+    background: #cbd5e1;
+    color: #94a3b8;
+    box-shadow: none;
+    cursor: not-allowed;
+    transform: none;
+}
+.secure-badge {
+    margin-top: 20px;
+    font-size: 12px;
+    color: #94a3b8;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+}
+.secure-badge i {
+    color: #10b981;
+}
+.hidden {
+    display: none !important;
+}
+
+/* Alert styles for error */
+#izipay-error-message {
+    padding: 12px 16px;
+    border-radius: 8px;
+    background-color: #fef2f2;
+    color: #991b1b;
+    border: 1px solid #fca5a5;
+    font-size: 14px;
+    margin-bottom: 20px;
+    font-weight: 500;
+}
+
+/* Loader Overlay */
+.izipay-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(15, 23, 42, 0.75);
+    backdrop-filter: blur(4px);
+    z-index: 99999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.izipay-loader-content {
+    background: #ffffff;
+    padding: 40px 30px;
+    border-radius: 16px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+    text-align: center;
+    max-width: 380px;
+    width: 90%;
+}
+.izipay-spinner {
+    width: 50px;
+    height: 50px;
+    border: 5px solid #f1f5f9;
+    border-top: 5px solid #10b981;
+    border-radius: 50%;
+    margin: 0 auto 20px;
+    animation: izi-spin 1s linear infinite;
+}
+.izipay-loader-content h4 {
+    margin: 0 0 10px;
+    font-size: 18px;
+    color: #0f172a;
+    font-weight: 700;
+}
+.izipay-loader-content p {
+    margin: 0;
+    font-size: 14px;
+    color: #64748b;
+}
+
+@keyframes izi-spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+</style>
+
+<div class="izipay-checkout-card">
+    <div class="izipay-checkout-header">
+        <div class="izipay-icon-wrapper">
+            <i class="fa fa-graduation-cap"></i>
+        </div>
+        <h3>Matrícula del Curso</h3>
+    </div>
+    <div class="izipay-checkout-body">
+        <div id="izipay-error-message" class="hidden"></div>
+
+        <div class="course-detail-row">
+            <span class="detail-label">Curso:</span>
+            <span class="detail-value">{{description}}</span>
+        </div>
+        <div class="course-detail-row">
+            <span class="detail-label">Método de Pago:</span>
+            <span class="detail-value"><span class="badge-izipay">Pago Seguro Izipay</span></span>
+        </div>
+        <div class="price-container">
+            <span class="price-label">Total a pagar</span>
+            <h2 class="price-amount">{{cost}}</h2>
+        </div>
+
+        {{#isguestuser}}
+            <div class="text-center">
+                <p class="text-muted small mb-3">Debe iniciar sesión para poder matricularse en este curso.</p>
+                <a href="{{config.wwwroot}}/login/" class="btn btn-primary btn-block py-2 font-weight-bold">
+                    Iniciar Sesión
+                </a>
+            </div>
+        {{/isguestuser}}
+        
+        {{^isguestuser}}
+            <button id="izipay-pay-button" class="izipay-btn-gradient" type="button">
+                <span class="btn-text">Matricularme y Pagar</span>
+                <span class="btn-spinner hidden"><i class="fa fa-circle-o-notch fa-spin"></i></span>
+            </button>
+            
+            <div class="secure-badge">
+                <i class="fa fa-lock"></i> Pago 100% seguro con encriptación SSL
+            </div>
+        {{/isguestuser}}
+    </div>
+</div>
+
+<!-- Overlay Loader para Estados del Pago -->
+<div id="izipay-overlay-loader" class="izipay-overlay hidden">
+    <div class="izipay-loader-content">
+        <div class="izipay-spinner"></div>
+        <h4 id="izipay-loader-status">Iniciando pasarela de pago...</h4>
+        <p>Por favor, no cierre ni refresque esta página.</p>
+    </div>
+</div>
+
+{{^isguestuser}}
+{{#js}}
+(function() {
+    var payButton = document.getElementById('izipay-pay-button');
+    var overlay = document.getElementById('izipay-overlay-loader');
+    var statusText = document.getElementById('izipay-loader-status');
+    var errDiv = document.getElementById('izipay-error-message');
+
+    if (!payButton) return;
+
+    payButton.addEventListener('click', function() {
+        // 1. Mostrar estado de carga inicial
+        showLoader('Iniciando pasarela de pago...');
+        payButton.setAttribute('disabled', 'true');
+        payButton.querySelector('.btn-text').textContent = 'Procesando...';
+        payButton.querySelector('.btn-spinner').classList.remove('hidden');
+        errDiv.classList.add('hidden');
+
+        // 2. Obtener Token de Izipay mediante endpoint backend
+        var tokenUrl = M.cfg.wwwroot + '/enrol/fee/izipay_token.php?instanceid={{instanceid}}';
+        fetch(tokenUrl)
+            .then(function(res) { return res.json(); })
+            .then(function(data) {
+                if (data.status !== 'success') {
+                    throw new Error(data.message || 'Error desconocido al generar token.');
+                }
+                
+                updateStatus('Cargando formulario de seguridad...');
+                
+                // 3. Cargar el SDK JS de Izipay de forma dinámica
+                return loadIzipaySdk().then(function() {
+                    return data;
+                });
+            })
+            .then(function(tokenData) {
+                hideLoader();
+                
+                // 4. Construir la configuración del Checkout
+                var cfg = {
+                    transactionId: tokenData.transactionId,
+                    action: 'pay',
+                    merchantCode: tokenData.merchantCode,
+                    order: {
+                        orderNumber: tokenData.orderNumber,
+                        showAmount: true,
+                        currency: tokenData.currency,
+                        amount: parseFloat(tokenData.amount).toFixed(2),
+                        processType: 'AT',
+                        merchantBuyerId: tokenData.buyerId,
+                        dateTimeTransaction: tokenData.dateTimeTransaction
+                    },
+                    billing: {
+                        firstName: tokenData.buyer.firstName,
+                        lastName: tokenData.buyer.lastName,
+                        email: tokenData.buyer.email,
+                        phoneNumber: tokenData.buyer.phone,
+                        street: 'Lima, Perú',
+                        city: 'Lima',
+                        state: 'Lima',
+                        country: 'PE',
+                        postalCode: '15000',
+                        documentType: 'DNI',
+                        document: '00000000'
+                    }
+                };
+
+                // 5. Inicializar y cargar el formulario de Izipay
+                var checkout = new Izipay({ config: cfg });
+                checkout.LoadForm({
+                    authorization: tokenData.authorization,
+                    keyRSA: tokenData.keyRSA,
+                    callbackResponse: function(response) {
+                        if (response && response.payloadHttp) {
+                            confirmPayment(response.payloadHttp);
+                        } else {
+                            showError('No se recibió confirmación de pago de la pasarela.');
+                        }
+                    }
+                });
+            })
+            .catch(function(err) {
+                showError('Error: ' + err.message);
+            });
+    });
+
+    function confirmPayment(payloadHttp) {
+        showLoader('Verificando pago y matriculando...');
+        
+        var formData = new FormData();
+        formData.append('instanceid', '{{instanceid}}');
+        formData.append('payloadHttp', payloadHttp);
+
+        var confirmUrl = M.cfg.wwwroot + '/enrol/fee/izipay_confirm.php';
+        fetch(confirmUrl, {
+            method: 'POST',
+            body: formData
+        })
+            .then(function(res) { return res.json(); })
+            .then(function(data) {
+                if (data.success) {
+                    updateStatus('¡Pago exitoso! Matriculando...');
+                    setTimeout(function() {
+                        window.location.href = '{{successurl}}';
+                    }, 1500);
+                } else {
+                    showError(data.error || 'La verificación del pago falló.');
+                }
+            })
+            .catch(function(err) {
+                showError('Error en verificación de pago: ' + err.message);
+            });
     }
 
-}}
-<div class="enrol_fee_payment_region text-center">
-    {{#isguestuser}}
-        <div class="mdl-align">
-            <p>{{# str }} paymentrequired {{/ str}}</p>
-            <p><b>{{cost}}</b></p>
-            <p><a href="{{config.wwwroot}}/login/">{{# str }} loginsite {{/ str }}</a></p>
-        </div>
-    {{/isguestuser}}
-    {{^isguestuser}}
-        <p>{{# str }} paymentrequired {{/ str}}</p>
-        <p><b>{{cost}}</b></p>
-        <button
-            class="btn btn-secondary"
-            type="button"
-            id="gateways-modal-trigger-{{ uniqid }}"
-            data-action="core_payment/triggerPayment"
-            data-component="enrol_fee"
-            data-paymentarea="fee"
-            data-itemid="{{instanceid}}"
-            data-cost="{{cost}}"
-            data-successurl="{{successurl}}"
-            data-description={{# quote }}{{description}}{{/ quote }}
-        >
-            {{# str }} sendpaymentbutton, enrol_fee {{/ str }}
-        </button>
-    {{/isguestuser}}
-</div>
-{{#js}}
-    require(['core_payment/gateways_modal'], function(modal) {
-        modal.init();
-    });
+    function loadIzipaySdk() {
+        return new Promise(function(resolve, reject) {
+            if (window.Izipay) {
+                resolve();
+                return;
+            }
+            var sdkUrl = 'https://sandbox-checkout.izipay.pe/payments/v1/js/index.js';
+            var existing = document.querySelector('script[src="' + sdkUrl + '"]');
+            if (existing) {
+                var check = setInterval(function() {
+                    if (window.Izipay) {
+                        clearInterval(check);
+                        resolve();
+                    }
+                }, 100);
+                return;
+            }
+            var script = document.createElement('script');
+            script.src = sdkUrl;
+            script.async = true;
+            script.onload = function() {
+                if (window.Izipay) {
+                    resolve();
+                } else {
+                    reject(new Error('Izipay SDK cargado pero no disponible en window.'));
+                }
+            };
+            script.onerror = function() {
+                reject(new Error('Error al descargar el SDK de Izipay.'));
+            };
+            document.head.appendChild(script);
+        });
+    }
+
+    function showLoader(text) {
+        statusText.textContent = text;
+        overlay.classList.remove('hidden');
+    }
+
+    function updateStatus(text) {
+        statusText.textContent = text;
+    }
+
+    function hideLoader() {
+        overlay.classList.add('hidden');
+    }
+
+    function showError(msg) {
+        errDiv.textContent = msg;
+        errDiv.classList.remove('hidden');
+        hideLoader();
+        
+        payButton.removeAttribute('disabled');
+        payButton.querySelector('.btn-text').textContent = 'Matricularme y Pagar';
+        payButton.querySelector('.btn-spinner').classList.add('hidden');
+    }
+})();
 {{/js}}
+{{/isguestuser}}
