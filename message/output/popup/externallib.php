@@ -184,7 +184,7 @@ class message_popup_external extends external_api {
     public static function get_unread_popup_notification_count_parameters() {
         return new external_function_parameters(
             array(
-                'useridto' => new external_value(PARAM_INT, 'the user id who received the message, 0 for any user', VALUE_REQUIRED),
+                'useridto' => new external_value(PARAM_INT, 'the user id who received the message, 0 for any user', VALUE_DEFAULT, 0),
             )
         );
     }
@@ -198,7 +198,7 @@ class message_popup_external extends external_api {
      * @param  int      $useridto       the user id who received the message
      * @return external_description
      */
-    public static function get_unread_popup_notification_count($useridto) {
+    public static function get_unread_popup_notification_count($useridto = 0) {
         global $USER;
 
         $params = self::validate_parameters(
@@ -210,6 +210,10 @@ class message_popup_external extends external_api {
         self::validate_context($context);
 
         $useridto = $params['useridto'];
+
+        if (empty($useridto)) {
+            $useridto = $USER->id;
+        }
 
         if (!empty($useridto)) {
             if (core_user::is_real_user($useridto)) {
