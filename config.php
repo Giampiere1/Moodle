@@ -6,20 +6,20 @@ $CFG = new stdClass();
 
 $CFG->dbtype = 'mariadb';
 $CFG->dblibrary = 'native';
-$CFG->dbhost = '127.0.0.1';
-$CFG->dbname = 'moodle';
-$CFG->dbuser = 'root';
-$CFG->dbpass = '';
+$CFG->dbhost = '66.116.209.78';
+$CFG->dbname = 'leuroa19_moodle';
+$CFG->dbuser = 'leuroa19_leuroa19';
+$CFG->dbpass = 'Giampiere1234';
 $CFG->prefix = 'mdl_';
 $CFG->dboptions = array(
   'dbpersist' => 0,
-  'dbport' => '3307',
+  'dbport' => '3306',
   'dbsocket' => '',
   'dbcollation' => 'utf8mb4_general_ci',
 );
 
-$CFG->wwwroot = 'http://localhost/SalaVirtualCNL';
-$CFG->dataroot = 'C:\\wamp64\\www\\moodledatacnl';
+$CFG->wwwroot = 'http://localhost/SalaVirtual';
+$CFG->dataroot = 'C:\\wamp64\\www\\moodledata';
 $CFG->admin = 'admin';
 
 $CFG->directorypermissions = 0777;

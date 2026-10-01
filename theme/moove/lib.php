@@ -385,7 +385,9 @@ function theme_moove_delete_menuitems(\flat_navigation $flatnav) {
  * @return bool
  */
 function theme_moove_is_course_available_to_display_in_navbar($courseid) {
-    global $DB, $USER;
+    global $DB, $USER, $CFG;
+
+    require_once($CFG->libdir . '/completionlib.php');
 
     $course = $DB->get_record('course', ['id' => $courseid], '*');
 

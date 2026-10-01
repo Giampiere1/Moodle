@@ -31,8 +31,38 @@ require(['theme_boost/drawer'], function(mod) {
     mod.init();
 });
 
-require(['theme_moove/metismenu', 'jquery'], function(metisMenu, $) {
-    $(".metismenu").metisMenu();
+require(['jquery'], function($) {
+    // Robust accordion toggle for navigation drawer submenus (My Courses / Course sections)
+    $('#nav-drawer').on('click', '.has-arrow', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        var $btn = $(this);
+        var $li = $btn.closest('li');
+        var $sub = $li.children('ul');
+        var isExpanded = $li.hasClass('active') || $btn.attr('aria-expanded') === 'true';
+
+        if (isExpanded) {
+            $li.removeClass('active');
+            $btn.attr('aria-expanded', 'false');
+            $sub.stop(true, true).slideUp(200);
+        } else {
+            $li.addClass('active');
+            $btn.attr('aria-expanded', 'true');
+            $sub.stop(true, true).slideDown(200);
+        }
+    });
+
+    // Auto-expand submenu if it contains an active item
+    $('#nav-drawer .has-arrow').each(function() {
+        var $btn = $(this);
+        var $li = $btn.closest('li');
+        var $sub = $li.children('ul');
+        if ($sub.find('.active').length > 0) {
+            $li.addClass('active');
+            $btn.attr('aria-expanded', 'true');
+            $sub.show();
+        }
+    });
 });
 
 require([], function() {

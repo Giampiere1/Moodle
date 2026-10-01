@@ -237,21 +237,21 @@ $string['forumhtmlemailfooterdesc'] = 'Configure the email footer for the forum 
 $string['forumcustomtemplate'] = 'Use a pretty template for forum mails';
 $string['forumcustomtemplatedesc'] = 'Enable that in order to use a pretty template when sending forum messages via email. If not enabled standard formatting of forum mails will be used.';
 
-$string['certificates'] = 'Certificates';
-$string['certificatestitle'] = 'My certificates';
-$string['subtitleallcertificates'] = 'Certificates from all courses';
-$string['subtitlecoursecertificates'] = 'Course certificates';
-$string['nohavecertificates'] = 'You no have certificates yet';
-$string['coursesections'] = 'Course sections';
+$string['certificates'] = 'Certificados';
+$string['certificatestitle'] = 'Mis certificados';
+$string['subtitleallcertificates'] = 'Certificados de todos los cursos';
+$string['subtitlecoursecertificates'] = 'Certificados del curso';
+$string['nohavecertificates'] = 'Aún no tienes certificados';
+$string['coursesections'] = 'Secciones del curso';
 
 // Mypublic page.
-$string['userprofile'] = 'User profile';
-$string['competencyplans'] = 'Competency plans';
-$string['details'] = 'Details';
-$string['startedon'] = 'Started on';
-$string['addcontact'] = 'Add contact';
-$string['removecontact'] = 'Remove contact';
-$string['certificates'] = 'Certificates';
+$string['userprofile'] = 'Perfil de usuario';
+$string['competencyplans'] = 'Planes de competencias';
+$string['details'] = 'Detalles';
+$string['startedon'] = 'Iniciado el';
+$string['addcontact'] = 'Añadir contacto';
+$string['removecontact'] = 'Eliminar contacto';
+$string['certificates'] = 'Certificados';
 
 // Theme settings.
 $string['themesettingstitle'] = 'Accessibility settings';
