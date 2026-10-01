@@ -106,7 +106,7 @@ class external extends external_api {
             'template' => new external_value(PARAM_SAFEPATH, 'name of the template'),
             'themename' => new external_value(PARAM_ALPHANUMEXT, 'The current theme.'),
             'includecomments' => new external_value(PARAM_BOOL, 'Include comments or not', VALUE_DEFAULT, false),
-            'lang' => new external_value(PARAM_LANG, 'lang', VALUE_DEFAULT, null),
+            'lang' => new external_value(PARAM_SAFEDIR, 'lang', VALUE_DEFAULT, null),
         ]);
     }
 

@@ -850,6 +850,11 @@ function enrol_get_course_info_icons($course, array $instances = NULL) {
 function enrol_get_courses_sortingsql($sort = null) {
     global $CFG;
 
+    // Normalizar: si es cadena vacía o sólo espacios, tratar como null
+    if ($sort !== null && trim($sort) === '') {
+        $sort = null;
+    }
+
     // Prepare the visible SQL fragment as empty.
     $visible = '';
     // Only create a visible SQL fragment if the caller didn't already pass a sort order which contains the visible field.
@@ -873,7 +878,7 @@ function enrol_get_courses_sortingsql($sort = null) {
         }
     }
 
-    return $visible . $sort;
+    return rtrim($visible . $sort, ', ');
 }
 
 /**
