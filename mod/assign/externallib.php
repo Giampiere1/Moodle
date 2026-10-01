@@ -2586,7 +2586,7 @@ class mod_assign_external extends external_api {
             array(
                 'assignid' => new external_value(PARAM_INT, 'assign instance id'),
                 'groupid' => new external_value(PARAM_INT, 'group id'),
-                'filter' => new external_value(PARAM_RAW, 'search string to filter the results'),
+                'filter' => new external_value(PARAM_RAW, 'search string to filter the results', VALUE_DEFAULT, ''),
                 'skip' => new external_value(PARAM_INT, 'number of records to skip', VALUE_DEFAULT, 0),
                 'limit' => new external_value(PARAM_INT, 'maximum number of records to return', VALUE_DEFAULT, 0),
                 'onlyids' => new external_value(PARAM_BOOL, 'Do not return all user fields', VALUE_DEFAULT, false),
@@ -2613,7 +2613,7 @@ class mod_assign_external extends external_api {
      * @since Moodle 3.1
      * @throws moodle_exception
      */
-    public static function list_participants($assignid, $groupid, $filter, $skip,
+    public static function list_participants($assignid, $groupid, $filter = '', $skip = 0,
             $limit, $onlyids, $includeenrolments, $tablesort) {
         global $DB, $CFG;
         require_once($CFG->dirroot . "/mod/assign/locallib.php");

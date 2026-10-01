@@ -929,7 +929,7 @@ class mod_wiki_external extends external_api {
         return new external_function_parameters (
             array(
                 'title' => new external_value(PARAM_TEXT, 'New page title.'),
-                'content' => new external_value(PARAM_RAW, 'Page contents.'),
+                'content' => new external_value(PARAM_RAW, 'Page contents.', VALUE_DEFAULT, ''),
                 'contentformat' => new external_value(PARAM_TEXT, 'Page contents format. If an invalid format is provided, default
                     wiki format is used.', VALUE_DEFAULT, null),
                 'subwikiid' => new external_value(PARAM_INT, 'Page\'s subwiki ID.', VALUE_DEFAULT, null),
@@ -1085,7 +1085,7 @@ class mod_wiki_external extends external_api {
         return new external_function_parameters (
             array(
                 'pageid' => new external_value(PARAM_INT, 'Page ID.'),
-                'content' => new external_value(PARAM_RAW, 'Page contents.'),
+                'content' => new external_value(PARAM_RAW, 'Page contents.', VALUE_DEFAULT, ''),
                 'section' => new external_value(PARAM_RAW, 'Section page title.', VALUE_DEFAULT, null)
             )
         );
@@ -1100,7 +1100,7 @@ class mod_wiki_external extends external_api {
      * @return array of warnings and page data.
      * @since Moodle 3.1
      */
-    public static function edit_page($pageid, $content, $section = null) {
+    public static function edit_page($pageid, $content = '', $section = null) {
         global $USER;
 
         $params = self::validate_parameters(self::edit_page_parameters(),

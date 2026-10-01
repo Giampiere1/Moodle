@@ -54,7 +54,7 @@ class core_backup_external extends external_api {
                         new external_value(PARAM_ALPHANUM, 'Backup id to get progress for', VALUE_REQUIRED, null, NULL_ALLOWED),
                         'Backup id to get progress for', VALUE_REQUIRED
                  ),
-                'contextid' => new external_value(PARAM_INT, 'Context id', VALUE_REQUIRED, null, NULL_NOT_ALLOWED),
+                'contextid' => new external_value(PARAM_INT, 'Context id', VALUE_DEFAULT, 0),
             )
         );
     }
@@ -127,7 +127,7 @@ class core_backup_external extends external_api {
         return new external_function_parameters(
                 array(
                     'filename' => new external_value(PARAM_FILE, 'Backup filename', VALUE_REQUIRED, null, NULL_NOT_ALLOWED),
-                    'contextid' => new external_value(PARAM_INT, 'Context id', VALUE_REQUIRED, null, NULL_NOT_ALLOWED),
+                    'contextid' => new external_value(PARAM_INT, 'Context id', VALUE_DEFAULT, 0),
                 )
          );
     }
@@ -193,7 +193,7 @@ class core_backup_external extends external_api {
         return new external_function_parameters(
                 array(
                     'backupid' => new external_value(PARAM_ALPHANUMEXT, 'Backup id', VALUE_REQUIRED, null, NULL_NOT_ALLOWED),
-                    'contextid' => new external_value(PARAM_INT, 'Context id', VALUE_REQUIRED, null, NULL_NOT_ALLOWED),
+                    'contextid' => new external_value(PARAM_INT, 'Context id', VALUE_DEFAULT, 0),
                 )
         );
     }
@@ -207,7 +207,7 @@ class core_backup_external extends external_api {
      * @return array $results The array of results.
      * @since Moodle 3.7
      */
-    public static function get_async_backup_links_restore($backupid, $contextid) {
+    public static function get_async_backup_links_restore($backupid, $contextid = 0) {
         // Release session lock.
         \core\session\manager::write_close();
 
