@@ -27,7 +27,7 @@ defined('MOODLE_INTERNAL') || die();
 $functions = array(
 
     'block_starredcourses_get_starred_courses' => array(
-        'classpath' => 'block/starredcourses/classes/external.php',
+        'classpath' => 'blocks/starredcourses/classes/external.php',
         'classname'   => 'block_starredcourses_external',
         'methodname'  => 'get_starred_courses',
         'description' => 'Get users starred courses.',

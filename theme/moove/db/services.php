@@ -27,7 +27,7 @@ defined('MOODLE_INTERNAL') || die();
 $functions = array(
     'theme_moove_fontsize' => array(
         'classname' => 'theme_moove\api\accessibility',
-        'classpath' => 'theme_moove/classes/api/accessibility.php',
+        'classpath' => 'theme/moove/classes/api/accessibility.php',
         'methodname' => 'fontsize',
         'description' => 'Increase or decrease the site font size.',
         'type' => 'write',

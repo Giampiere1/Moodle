@@ -1956,7 +1956,7 @@ class core_message_external extends external_api {
     public static function get_messages_parameters() {
         return new external_function_parameters(
             array(
-                'useridto' => new external_value(PARAM_INT, 'the user id who received the message, 0 for any user', VALUE_REQUIRED),
+                'useridto' => new external_value(PARAM_INT, 'the user id who received the message, 0 for any user', VALUE_DEFAULT, 0),
                 'useridfrom' => new external_value(
                     PARAM_INT, 'the user id who send the message, 0 for any user. -10 or -20 for no-reply or support user',
                     VALUE_DEFAULT, 0),
@@ -2184,7 +2184,7 @@ class core_message_external extends external_api {
     public static function mark_all_notifications_as_read_parameters() {
         return new external_function_parameters(
             array(
-                'useridto' => new external_value(PARAM_INT, 'the user id who received the message, 0 for any user', VALUE_REQUIRED),
+                'useridto' => new external_value(PARAM_INT, 'the user id who received the message, 0 for any user', VALUE_DEFAULT, 0),
                 'useridfrom' => new external_value(
                     PARAM_INT, 'the user id who send the message, 0 for any user. -10 or -20 for no-reply or support user',
                     VALUE_DEFAULT, 0),
@@ -2206,7 +2206,7 @@ class core_message_external extends external_api {
      * @param  int      $timecreatedto  mark message created before this time as read, 0 for all messages
      * @return external_description
      */
-    public static function mark_all_notifications_as_read($useridto, $useridfrom, $timecreatedto = 0) {
+    public static function mark_all_notifications_as_read($useridto = 0, $useridfrom = 0, $timecreatedto = 0) {
         global $USER;
 
         $params = self::validate_parameters(
@@ -2269,7 +2269,7 @@ class core_message_external extends external_api {
     public static function get_unread_conversations_count_parameters() {
         return new external_function_parameters(
             array(
-                'useridto' => new external_value(PARAM_INT, 'the user id who received the message, 0 for any user', VALUE_REQUIRED),
+                'useridto' => new external_value(PARAM_INT, 'the user id who received the message, 0 for any user', VALUE_DEFAULT, 0),
             )
         );
     }
@@ -2283,7 +2283,7 @@ class core_message_external extends external_api {
      * @param  int      $useridto       the user id who received the message
      * @return external_description
      */
-    public static function get_unread_conversations_count($useridto) {
+    public static function get_unread_conversations_count($useridto = 0) {
         global $USER, $CFG;
 
         // Check if messaging is enabled.
@@ -2309,6 +2309,7 @@ class core_message_external extends external_api {
             }
         } else {
             $useridto = $USER->id;
+            $userto = $USER;
         }
 
         // Check if the current user is the receiver or just a privileged user.

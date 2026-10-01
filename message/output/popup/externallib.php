@@ -47,7 +47,7 @@ class message_popup_external extends external_api {
     public static function get_popup_notifications_parameters() {
         return new external_function_parameters(
             array(
-                'useridto' => new external_value(PARAM_INT, 'the user id who received the message, 0 for current user'),
+                'useridto' => new external_value(PARAM_INT, 'the user id who received the message, 0 for current user', VALUE_DEFAULT, 0),
                 'newestfirst' => new external_value(
                     PARAM_BOOL, 'true for ordering by newest first, false for oldest first',
                     VALUE_DEFAULT, true),
@@ -67,9 +67,8 @@ class message_popup_external extends external_api {
      * @param  bool     $newestfirst        true for ordering by newest first, false for oldest first
      * @param  int      $limit              the number of results to return
      * @param  int      $offset             offset the result set by a given amount
-     * @return external_description
      */
-    public static function get_popup_notifications($useridto, $newestfirst, $limit, $offset) {
+    public static function get_popup_notifications($useridto = 0, $newestfirst = true, $limit = 0, $offset = 0) {
         global $USER, $PAGE;
 
         $params = self::validate_parameters(
@@ -241,3 +240,4 @@ class message_popup_external extends external_api {
         return new external_value(PARAM_INT, 'The count of unread popup notifications');
     }
 }
+
